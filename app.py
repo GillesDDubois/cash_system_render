@@ -3,7 +3,6 @@ from dash import html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 
 # Drink menu
-# Drink menu
 MENU = {
     "Coca Cola Zero": 2.5,
     "Coca Cola": 2.5,
@@ -31,10 +30,10 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 app.title = "POS System"
 
 app.layout = dbc.Container([
-    
+
     html.H2("Cash Register", className="text-center my-3"),
 
-    # Store cart in memory
+    # Store cart
     dcc.Store(id="cart-store", data=[]),
 
     html.H4("Select Drinks"),
@@ -42,7 +41,7 @@ app.layout = dbc.Container([
     dbc.Row([
         dbc.Col(
             dbc.Button(
-                f"{drink} - ${price:.2f}",
+                f"{drink} - €{price:.2f}",
                 id={"type": "drink-btn", "index": drink},
                 color="primary",
                 className="m-1 w-100",
@@ -59,7 +58,7 @@ app.layout = dbc.Container([
 
     html.Div(id="cart-display"),
 
-    html.H3("Total: $0.00", id="total-display", className="mt-3"),
+    html.H3("Total: €0.00 (0 x €0.50)", id="total-display", className="mt-3"),
 
     dbc.Button("Clear Cart", id="clear-btn", color="danger", className="mt-2 w-100")
 
@@ -95,15 +94,16 @@ def clear_cart(n):
     return []
 
 
-# Update cart display + total
+# Update cart display + total + 50c counter
 @app.callback(
     Output("cart-display", "children"),
     Output("total-display", "children"),
     Input("cart-store", "data")
 )
 def update_display(cart):
+
     if not cart:
-        return "Cart is empty", "Total: $0.00"
+        return "Cart is empty", "Total: €0.00 (0 x €0.50)"
 
     items = []
     total = 0
@@ -111,12 +111,15 @@ def update_display(cart):
     for item in cart:
         price = MENU[item]
         total += price
-        items.append(html.Div(f"{item} - ${price:.2f}"))
+        items.append(html.Div(f"{item} - €{price:.2f}"))
 
-    return items, f"Total: ${total:.2f}"
+    # count 50 cent units
+    num_50c = int(total / 0.5)
+
+    return items, f"Total: €{total:.2f} ({num_50c} x €0.50)"
+
 
 server = app.server
 
 if __name__ == "__main__":
-
     app.run(debug=True)
