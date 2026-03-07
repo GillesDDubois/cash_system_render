@@ -3,12 +3,28 @@ from dash import html, dcc, Input, Output, State
 import dash_bootstrap_components as dbc
 
 # Drink menu
+# Drink menu
 MENU = {
-    "Coffee": 3.00,
-    "Tea": 2.50,
-    "Water": 1.50,
-    "Soda": 2.00,
-    "Beer": 4.00
+    "Coca Cola Zero": 2.5,
+    "Coca Cola": 2.5,
+    "Ice Tea": 2.5,
+    "Fanta": 2.5,
+    "Spa Rood": 2.5,
+    "Spa Blauw": 2.5,
+    "Stella": 2.5,
+    "Stella 0.0": 2.5,
+    "Duvel": 4.0,
+    "Leffe Blond": 4.0,
+    "Leffe Bruin": 4.0,
+    "Witte Wijn": 4.0,
+    "Rode Wijn": 4.0,
+    "Cava": 4.0,
+    "Fles": 20.0,
+    "Sportzot": 4.0,
+    "Olmi Gember": 4.0,
+    "Olmi Beetroot": 4.0,
+    "Koffie": 2.5,
+    "Thee": 2.5
 }
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -102,4 +118,5 @@ def update_display(cart):
 server = app.server
 
 if __name__ == "__main__":
+
     app.run(debug=True)
